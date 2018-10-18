@@ -13,33 +13,11 @@ namespace Lab3
             System.Console.WriteLine("Solving by Kramer (Parallel) is started!");
             System.Console.WriteLine("Proccessing...");
             Stopwatch sw = new Stopwatch();
-            
+            D = Determinant.Calculate(matrix);
             int size = matrix.GetLength(0);
             double[] results = new double[size];
-            System.Console.WriteLine("Calculating D...");
-            double D = Determinant.Calculate(matrix);
-            System.Console.WriteLine("Calculating D finished!");
             sw.Start();
             double[] d = new double[size];
-            //double[,] tempMatrix = new double[size, size];
-            //for (int i = 0; i < matrix.GetLength(0); i++)
-            //{
-            //    for (int j = 0; j < size; j++)
-            //    {
-            //        for (int k = 0; k < size; k++)
-            //        {
-            //            if (k == i)
-            //            {
-            //                tempMatrix[j, k] = koeficients[j];
-            //                continue;
-            //            }
-            //            tempMatrix[j, k] = matrix[j, k];
-            //        }
-            //    }
-
-            //    d[i] = Task.Factory.StartNew(() => Determinant.Calculate(tempMatrix)).Result;
-            //    System.Console.WriteLine($"d[{i + 1}] = {d[i]}");
-            //}
             Thread[] list = new Thread[THREADS_COUNT];
             for (int i = 0; i < THREADS_COUNT; ++i)
             {
@@ -62,7 +40,6 @@ namespace Lab3
             }
             sw.Stop();
             System.Console.WriteLine($"Finished. Time elapsed: {sw.ElapsedMilliseconds}");
-            NonParallelSolve(matrix, koeficients);
             return results;
         }
 
@@ -91,7 +68,7 @@ namespace Lab3
             }
         }
 
-        private void NonParallelSolve(double[,] matrix, double[] koeficients)
+        public double[] NonParallelSolve(double[,] matrix, double[] koeficients)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -100,9 +77,7 @@ namespace Lab3
             
             int size = matrix.GetLength(0);
             double[] results = new double[size];
-            System.Console.WriteLine("Calculating D...");
-            double D = Determinant.Calculate(matrix);
-            System.Console.WriteLine("Calculating D finished!");
+            D = Determinant.Calculate(matrix);
             double[] d = new double[matrix.GetLength(0)];
             double[,] tempMatrix;
             for (int i = 0; i < matrix.GetLength(0); i++)
@@ -122,7 +97,7 @@ namespace Lab3
                 }
 
                 d[i] = Determinant.Calculate(tempMatrix);
-                System.Console.WriteLine($"d[{i + 1}] = {d[i]}");
+                //System.Console.WriteLine($"d[{i + 1}] = {d[i]}");
             }
 
             for (int i = 0; i < size; i++)
@@ -132,6 +107,9 @@ namespace Lab3
 
             sw.Stop();
             System.Console.WriteLine($"Finished. Time elapsed: {sw.ElapsedMilliseconds}");
+            return results;
         }
+
+        double D;
     }
 }

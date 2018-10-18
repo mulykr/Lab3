@@ -82,7 +82,13 @@ namespace Lab3
         private void ShowResults()
         {
             Console.WriteLine("Results:");
-            double[] result = algorithm.Solve(matrix, koeficients);
+            double[] result = algorithm.NonParallelSolve(matrix, koeficients);
+            for (int i = 0; i < size; i++)
+            {
+                Console.WriteLine($"X{i + 1} = {result[i]}");
+            }
+            Console.WriteLine("Results:");
+            result = algorithm.Solve(matrix, koeficients);
             for (int i = 0; i < size; i++)
             {
                 Console.WriteLine($"X{i + 1} = {result[i]}");
